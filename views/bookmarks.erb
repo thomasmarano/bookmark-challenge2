@@ -1,0 +1,48 @@
+<h1>LIST OF BOOKMARKS</h1>
+
+<% if flash[:notice] != nil %>
+  <h2><%= flash[:notice] %></h2>
+<% end %>
+
+<ul>
+  <% @bookmarks.each do |bookmark| %>
+
+
+      <li>
+
+        <a href='<%=bookmark['url']%>'><%=bookmark['title']%></a>
+
+
+        <ol>
+          <% Comments.where(bookmark['id']).each do |each_comment| %>
+            <li><%= each_comment['text']%></li>
+          <% end %>
+        </ol>
+        <form action="/bookmarks/<%=bookmark['id']%>/delete" method="post">
+          <input id="hidden" type="hidden" name="_method" value="delete"/>
+          <input type='submit' value='delete'/>
+        </form>
+        <form action="/bookmarks/<%=bookmark['id']%>" method='post'>
+          <input id='hidden' type='hidden' name='_method' value='patch'/>
+          NAME: <input type='text' name='title'/>
+          URL: <input type='text' name='url'/>
+          <input type='submit' value='update'/>
+        </form>
+
+      <form action="/comments/<%=bookmark['id']%>" method="post">
+        COMMENT: <input type='text' name='comment'/>
+        <input type='submit' value='confirm'/>
+      </form>
+
+      </li>
+
+  <% end %>
+</ul>
+
+
+
+<form action='/bookmark-saver' method='post'>
+  Name: <input type='text' name='bookmark_name'/>
+  URL: <input type='text' name='new_bookmark'/>
+  <input type='submit' value='Submit'/>
+</form>

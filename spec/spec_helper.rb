@@ -1,14 +1,22 @@
 
+ENV['RACK_ENV'] = 'bookmark_manager_test'
+
+require_relative './table_deleter.rb'
+
 RSpec.configure do |config|
 
-  ENV['RACK_ENV'] = 'test'
+  config.before(:each) do
+    empty_bookmarks_table
+  end
 
-  require File.join(File.dirname(__FILE__), '..', './lib/app.rb')
+  require File.join(File.dirname(__FILE__), '..', './app.rb')
 
   require 'rspec'
   require 'capybara'
   require 'capybara/rspec'
 
+
+  Capybara.app = BookmarkManager
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
@@ -58,7 +66,7 @@ RSpec.configure do |config|
   # Limits the available syntax to the non-monkey patched syntax that is
   # recommended. For more details, see:
   #   - http://rspec.info/blog/2012/06/rspecs-new-expectation-syntax/
-  #   - http://www.teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
+  #   - http://http://www.teaisaweso.me/blog/2013/05/27/rspecs-new-message-expectation-syntax/
   #   - http://rspec.info/blog/2014/05/notable-changes-in-rspec-3/#zero-monkey-patching-mode
   config.disable_monkey_patching!
 
